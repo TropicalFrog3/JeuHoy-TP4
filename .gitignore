@@ -1,0 +1,9 @@
+﻿################################################################################
+# Ce fichier .gitignore a été automatiquement créé par Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/JeuHoy_WPF_Natif/obj/Debug
+/JeuHoy_WPF_Natif/bin/Debug
+/JeuHoy_WPF_Natif/Properties
+/packages/Microsoft.Kinect.2.0.1410.19000
