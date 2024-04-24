@@ -400,3 +400,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/JeuHoy_WPF_Natif/obj/Release/JeuHoy_WPF_Natif_MarkupCompile.cache
+/JeuHoy_WPF_Natif/obj/Release/Vue/wAide.g.cs
+/JeuHoy_WPF_Natif/obj/Release/Vue/wEntrainement.g.cs
+/JeuHoy_WPF_Natif/obj/Release/Vue/wJeu.g.cs
