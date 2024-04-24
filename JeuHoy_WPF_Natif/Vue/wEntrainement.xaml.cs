@@ -1,4 +1,6 @@
-﻿using Microsoft.Kinect;
+﻿using JeuHoy_WPF_Natif.Presentation;
+using JeuHoy_WPF_Natif.Vue;
+using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +19,14 @@ namespace JeuHoy_WPF
     /// Description: Permet de faire l'entrainement des différentes figures de danse.
     /// Date:        2023-04-17
     /// </summary>
-    public partial class wEntrainement : Window
+    public partial class wEntrainement : Window, IwEntrainement
     {
         #region Constants
         public static readonly double DPI = 96.0;
         public static readonly PixelFormat FORMAT = PixelFormats.Bgra32;
         #endregion
+
+        private PresentateurwEntrainement _presentateurwEntrainement;
 
         private Dictionary<string, BitmapImage> _dicImgFigure = new Dictionary<string, BitmapImage>();
         private JouerSon _son = new JouerSon();
@@ -33,6 +37,9 @@ namespace JeuHoy_WPF
         private ushort[] _picFrameData = null;
         private byte[] _picPixels = null;
 
+        private Dictionary<int, Dictionary<JointType, List<Point>>> _skeletonData = new Dictionary<int, Dictionary<JointType, List<Point>>>();
+
+
 
         /// <summary>
         /// Constructeur
@@ -40,6 +47,8 @@ namespace JeuHoy_WPF
         public wEntrainement()
         {
             InitializeComponent();
+
+            _presentateurwEntrainement = new PresentateurwEntrainement(this);
 
             _kinectSensor = KinectSensor.GetDefault();
             if (_kinectSensor != null)
@@ -68,9 +77,20 @@ namespace JeuHoy_WPF
             _son.JouerSonAsync(@"./Presentation/HoyContent/hoy.wav");
         }
 
+        public string Console { get => txtConsole.Text; set => txtConsole.Text = value; }
+        string IwEntrainement.NomFichier => "DataPerceptron.txt";
+
+        public Dictionary<int, Dictionary<JointType, List<Point>>> ContenuFichier { get => _skeletonData; set => _skeletonData = value; }
+
+        public event EventHandler FermetureEvt;
+        public event EventHandler LectureFichierEvt;
+        public event EventHandler EcritureFichierEvt;
+
+
         private void BodyFrameReader_FrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
             pDessinSquelette.Children.Clear();
+            _skeletonData.Clear();
 
             using (BodyFrame bodyFrame = e.FrameReference.AcquireFrame())
             {
@@ -82,7 +102,34 @@ namespace JeuHoy_WPF
 
                     foreach (Body body in bodies)
                     {
-                        DessinerSquelette(body, _kinectSensor);
+                        if(body.IsTracked)
+                        {
+                            if (!_skeletonData.ContainsKey(_positionEnCours))
+                                _skeletonData[_positionEnCours] = new Dictionary<JointType, List<Point>>();
+
+                            foreach (Joint joint in body.Joints.Values)
+                            {
+                                if (joint.TrackingState == TrackingState.Tracked)
+                                {
+                                    Point point = GetPoint(_kinectSensor, joint.Position, pDessinSquelette.ActualHeight, pDessinSquelette.ActualWidth);
+
+                                    if (!_skeletonData[_positionEnCours].ContainsKey(joint.JointType))
+                                    {
+                                        _skeletonData[_positionEnCours][joint.JointType] = new List<Point>();
+                                    }
+                                    else
+                                    {
+                                        _skeletonData[_positionEnCours][joint.JointType].Add(point);
+                                    }
+                                    // else WTF?
+                                    _skeletonData[_positionEnCours][joint.JointType].Add(point);
+
+                                }
+                            }
+                            DessinerSquelette(body, _kinectSensor);
+                        }
+                       
+
                     }
                 }
             }
@@ -202,7 +249,7 @@ namespace JeuHoy_WPF
             point.X = float.IsInfinity(depthPoint.X) ? 0.0 : depthPoint.X;
             point.Y = float.IsInfinity(depthPoint.Y) ? 0.0 : depthPoint.Y;
 
-            point.X = point.X / 512 * canvasWidth; 
+            point.X = point.X / 512 * canvasWidth;
             point.Y = point.Y / 424 * canvasHeight;
 
             return point;
@@ -229,7 +276,6 @@ namespace JeuHoy_WPF
                 picPositionAFaire.Source = imgValue;
 
         }
-
 
         /// <summary>
         /// Fermeture de la fenêtre.
@@ -285,6 +331,11 @@ namespace JeuHoy_WPF
         private void btnApprendre_Click(object sender, RoutedEventArgs e)
         {
             //Ajouter du code ICI
+
+            // ajout du perceptron pour l'apprentissage
+            // ajout de la position du skelette
+
+            EcritureFichierEvt(this, new EventArgs());
 
         }
 

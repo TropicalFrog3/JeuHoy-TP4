@@ -66,12 +66,16 @@
     </ApplicationDefinition>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Modele\CstApplication.cs" />
+    <Compile Include="Modele\GestionFichierTexte.cs" />
+    <Compile Include="Modele\IGestionFichierTexte.cs" />
     <Compile Include="Presentation\JouerMp3.cs" />
     <Compile Include="Presentation\JouerSon.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Presentation\PresentateurwEntrainement.cs" />
+    <Compile Include="Vue\IwEntrainement.cs" />
     <Compile Include="Vue\wAide.xaml.cs">
       <DependentUpon>wAide.xaml</DependentUpon>
     </Compile>
@@ -113,6 +117,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="DataPerceptron.txt" />
     <Resource Include="Presentation\JouerHoy.png" />
     <Resource Include="Presentation\téléchargement.jpg" />
     <Resource Include="Presentation\Resources\fondjeu.png">
