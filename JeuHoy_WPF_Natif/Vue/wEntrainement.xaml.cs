@@ -19,11 +19,20 @@ namespace JeuHoy_WPF
     /// </summary>
     public partial class wEntrainement : Window
     {
-      
+        #region Constants
+        public static readonly double DPI = 96.0;
+        public static readonly PixelFormat FORMAT = PixelFormats.Bgra32;
+        #endregion
+
         private Dictionary<string, BitmapImage> _dicImgFigure = new Dictionary<string, BitmapImage>();
         private JouerSon _son = new JouerSon();
         private int _positionEnCours = 1;
-       
+
+        private KinectSensor _kinectSensor = null;
+        private WriteableBitmap _bitmap = null;
+        private ushort[] _picFrameData = null;
+        private byte[] _picPixels = null;
+
 
         /// <summary>
         /// Constructeur
@@ -31,6 +40,22 @@ namespace JeuHoy_WPF
         public wEntrainement()
         {
             InitializeComponent();
+
+            _kinectSensor = KinectSensor.GetDefault();
+            if (_kinectSensor != null)
+            {
+                _kinectSensor.Open();
+                _kinectSensor.IsAvailableChanged += _kinectSensor_IsAvailableChanged; // change title to connected kinect
+                SetupDisplay();
+
+                MultiSourceFrameReader multi = _kinectSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color);
+                BodyFrameReader bodyFrameReader = _kinectSensor.BodyFrameSource.OpenReader();
+
+                multi.MultiSourceFrameArrived += Multi_MultiSourceFrameArrived;
+                bodyFrameReader.FrameArrived += BodyFrameReader_FrameArrived;
+
+                picKinect.Source = _bitmap;
+            }
 
             for (int i = 1; i <= CstApplication.NBFIGURE; i++)
             {
@@ -41,6 +66,76 @@ namespace JeuHoy_WPF
             lblNbPositions.Content = "/ " + CstApplication.NBFIGURE.ToString();
             ChargerFigure();
             _son.JouerSonAsync(@"./Presentation/HoyContent/hoy.wav");
+        }
+
+        private void BodyFrameReader_FrameArrived(object sender, BodyFrameArrivedEventArgs e)
+        {
+            pDessinSquelette.Children.Clear();
+
+            using (BodyFrame bodyFrame = e.FrameReference.AcquireFrame())
+            {
+                if (bodyFrame != null)
+                {
+                    Body[] bodies = new Body[6];
+
+                    bodyFrame.GetAndRefreshBodyData(bodies);
+
+                    foreach (Body body in bodies)
+                    {
+                        DessinerSquelette(body, _kinectSensor);
+                    }
+                }
+            }
+        }
+
+        private void Multi_MultiSourceFrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)
+        {
+            MultiSourceFrame sourceFrame = e.FrameReference.AcquireFrame();
+            if (sourceFrame == null)
+                return;
+
+            using (ColorFrame colorFrame = sourceFrame.ColorFrameReference.AcquireFrame())
+            {
+                if (colorFrame != null)
+                    ShowColorFrame(colorFrame);
+            }
+        }
+
+        private void ShowColorFrame(ColorFrame colorFrame)
+        {
+            if (colorFrame != null)
+            {
+                FrameDescription frameDescription = colorFrame.FrameDescription;
+                if (_bitmap == null)
+                {
+                    _bitmap = new WriteableBitmap(frameDescription.Width, frameDescription.Height, DPI, DPI, FORMAT, null);
+                }
+
+                colorFrame.CopyConvertedFrameDataToArray(_picPixels, ColorImageFormat.Bgra);
+                RenderPixelArray(_picPixels, colorFrame.FrameDescription);
+            }
+        }
+
+        private void RenderPixelArray(byte[] pixels, FrameDescription currentFrameDescription)
+        {
+            _bitmap.Lock();
+            _bitmap.WritePixels(new Int32Rect(0, 0, currentFrameDescription.Width, currentFrameDescription.Height), pixels, currentFrameDescription.Width * 4, 0);
+            _bitmap.Unlock();
+            picKinect.Source = _bitmap;
+        }
+
+        private void SetupDisplay()
+        {
+            // COLOR display
+            FrameDescription frameDescription;
+            frameDescription = _kinectSensor.ColorFrameSource.FrameDescription;
+            _picPixels = new byte[frameDescription.Width * frameDescription.Height * 4];
+            _picFrameData = new ushort[frameDescription.Width * frameDescription.Height];
+        }
+
+        private void _kinectSensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
+        {
+            this.Title = "Kinect XBox One [2.0] - " + (e.IsAvailable ? "Connecté" : "Déconnecté");
         }
 
         /// <summary>
@@ -65,7 +160,6 @@ namespace JeuHoy_WPF
             }
         }
 
-
         /// <summary>
         /// Dessine le joint d'un squellete d'un senseur Kinect sur le canvas passé en paramètre
         /// </summary>
@@ -77,20 +171,16 @@ namespace JeuHoy_WPF
         {
             if (joint.Position.X != 0 && joint.Position.Y != 0 && joint.Position.Z != 0)
             {
-                // Convertir la position du joint en coordonnées d'écran
-                System.Windows.Point point = GetPoint(sensor, joint.Position, canvas.Height, canvas.Width);
+                System.Windows.Point point = GetPoint(sensor, joint.Position, canvas.ActualHeight, canvas.ActualWidth); // Use ActualHeight and ActualWidth
 
-                // Créer un cercle à la position du joint
                 Ellipse ellipse = new Ellipse();
                 ellipse.Fill = new SolidColorBrush(Colors.Green);
                 ellipse.Width = size;
                 ellipse.Height = size;
 
-                // Positionner le cercle sur l'élément de dessin Canvas
                 Canvas.SetLeft(ellipse, point.X - size / 2);
                 Canvas.SetTop(ellipse, point.Y - size / 2);
 
-                // Ajouter le cercle à l'élément de dessin Canvas
                 canvas.Children.Add(ellipse);
             }
         }
@@ -104,7 +194,7 @@ namespace JeuHoy_WPF
         /// <param name="iCanvasHeight"></param>
         /// <param name="iCanvasWidth"></param>
         /// <returns></returns>
-        public System.Windows.Point GetPoint(KinectSensor sensor, CameraSpacePoint position, double iCanvasHeight, double iCanvasWidth)
+        public System.Windows.Point GetPoint(KinectSensor sensor, CameraSpacePoint position, double canvasHeight, double canvasWidth)
         {
             System.Windows.Point point = new System.Windows.Point();
 
@@ -112,14 +202,11 @@ namespace JeuHoy_WPF
             point.X = float.IsInfinity(depthPoint.X) ? 0.0 : depthPoint.X;
             point.Y = float.IsInfinity(depthPoint.Y) ? 0.0 : depthPoint.Y;
 
-            // La Kinect pour Xbox One utilise également le SDK 2 de Microsoft, et sa résolution de profondeur est de 512x424 pixels.
-            //// Ainsi, la résolution de la carte de profondeur pour la Kinect pour Xbox One est également de 512x424 pixels.
-            point.X = point.X / 512 * iCanvasHeight;
-            point.Y = point.Y / 424 * iCanvasWidth;
+            point.X = point.X / 512 * canvasWidth; 
+            point.Y = point.Y / 424 * canvasHeight;
 
             return point;
         }
-
 
         /// <summary>
         /// Charger la figure de danse en cours.
@@ -189,7 +276,6 @@ namespace JeuHoy_WPF
 
             ChargerFigure();
         }
-
 
         /// <summary>
         /// Apprentissage avec la position obtenu à partir de la Kinect versus l'image affichée.

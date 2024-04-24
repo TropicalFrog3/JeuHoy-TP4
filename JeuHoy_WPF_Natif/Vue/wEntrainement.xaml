@@ -16,13 +16,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="400"/>
             <ColumnDefinition Width="1050"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="pDessinSquelette" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0"        Margin="10,5,0,0" VerticalAlignment="Top" Width="280" Height="240px" Background="Black"/>
-        <Image x:Name="picKinect" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1"                Margin="10,5,0,0" VerticalAlignment="Top" Width="280" Height="240px" Grid.RowSpan="2" Source="/Presentation/téléchargement.jpg" Stretch="Fill" />
-        <TextBox x:Name="txtConsole" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="" Margin="10,5,0,0" VerticalAlignment="Top" Width="280" Height="240px"/>
+        <Canvas x:Name="pDessinSquelette" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0"        Margin="10,5,0,0" VerticalAlignment="Top" Width="380px" Height="240px" Background="Black"/>
+        <Image x:Name="picKinect" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1"                Margin="10,5,0,0" VerticalAlignment="Top" Width="380" Height="240px" Grid.RowSpan="2" Source="/Presentation/téléchargement.jpg" Stretch="Fill" />
+        <TextBox x:Name="txtConsole" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="" Margin="10,5,0,0" VerticalAlignment="Top" Width="380" Height="240px"/>
 
         <Grid Grid.Column="0" Grid.Row="3" Margin="10,-3,0,0" >
 
@@ -42,14 +42,10 @@
 
             <Label x:Name="lblFigureEnCours" Grid.Column="1" Grid.Row="1" Content="1" HorizontalAlignment="Center" VerticalAlignment="Top"  FontFamily="Matura MT Script Capitals" FontSize="50" Foreground="White"  />
             <Label x:Name="lblNbPositions" Grid.Column="2" Grid.Row="1"  Content="/ 10" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Matura MT Script Capitals" FontSize="50" Foreground="White" />
-
-
-
         </Grid>
         <Grid Grid.Column="1" Grid.RowSpan="5">
             <Image Source="/Presentation/fond.png" Stretch="Fill"/>
             <Image x:Name="picPositionAFaire"  HorizontalAlignment="Center" VerticalAlignment="Top" />
-
         </Grid>
 
     </Grid>
