@@ -167,6 +167,7 @@
     <Resource Include="Presentation\AideTuto.png" />
     <Resource Include="Presentation\fond.png" />
     <Resource Include="Presentation\fondjeu.png" />
+    <Resource Include="Presentation\Actions-application-exit-icon.png" />
     <Content Include="Presentation\HoyContent\hooy.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
