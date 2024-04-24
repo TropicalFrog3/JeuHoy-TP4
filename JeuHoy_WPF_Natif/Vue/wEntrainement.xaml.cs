@@ -40,7 +40,7 @@ namespace JeuHoy_WPF
 
             lblNbPositions.Content = "/ " + CstApplication.NBFIGURE.ToString();
             ChargerFigure();
-            _son.JouerSonAsync(@"./HoyContent/hoy.wav");
+            _son.JouerSonAsync(@"./Presentation/HoyContent/hoy.wav");
         }
 
         /// <summary>

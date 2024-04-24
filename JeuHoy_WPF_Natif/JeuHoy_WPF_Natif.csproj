@@ -34,6 +34,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Presentation\HoyContent\Game.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>JeuHoy_WPF.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Kinect, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Kinect.2.0.1410.19000\lib\net45\Microsoft.Kinect.dll</HintPath>
@@ -59,23 +65,23 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="CstApplication.cs" />
-    <Compile Include="JouerMp3.cs" />
-    <Compile Include="JouerSon.cs" />
+    <Compile Include="Modele\CstApplication.cs" />
+    <Compile Include="Presentation\JouerMp3.cs" />
+    <Compile Include="Presentation\JouerSon.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="wAide.xaml.cs">
+    <Compile Include="Vue\wAide.xaml.cs">
       <DependentUpon>wAide.xaml</DependentUpon>
     </Compile>
-    <Compile Include="wEntrainement.xaml.cs">
+    <Compile Include="Vue\wEntrainement.xaml.cs">
       <DependentUpon>wEntrainement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="wEntree.xaml.cs">
+    <Compile Include="Vue\wEntree.xaml.cs">
       <DependentUpon>wEntree.xaml</DependentUpon>
     </Compile>
-    <Compile Include="wJeu.xaml.cs">
+    <Compile Include="Vue\wJeu.xaml.cs">
       <DependentUpon>wJeu.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -107,192 +113,190 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="JouerHoy.png" />
-    <Resource Include="téléchargement.jpg" />
-    <Resource Include="Resources\fondjeu.png">
+    <Resource Include="Presentation\JouerHoy.png" />
+    <Resource Include="Presentation\téléchargement.jpg" />
+    <Resource Include="Presentation\Resources\fondjeu.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\etoiles.png">
+    <Resource Include="Presentation\HoyContent\etoiles.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\fig1.png">
+    <Resource Include="Presentation\HoyContent\fig1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\fig10.png">
+    <Resource Include="Presentation\HoyContent\fig10.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\fig2.png">
+    <Resource Include="Presentation\HoyContent\fig2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\fig3.png">
+    <Resource Include="Presentation\HoyContent\fig3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\fig4.png">
+    <Resource Include="Presentation\HoyContent\fig4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\fig5.png">
+    <Resource Include="Presentation\HoyContent\fig5.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\fig6.png">
+    <Resource Include="Presentation\HoyContent\fig6.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\fig7.png">
+    <Resource Include="Presentation\HoyContent\fig7.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\fig8.png">
+    <Resource Include="Presentation\HoyContent\fig8.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\fig9.png">
+    <Resource Include="Presentation\HoyContent\fig9.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\fighoy.png">
+    <Resource Include="Presentation\HoyContent\fighoy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\fond.png">
+    <Resource Include="Presentation\HoyContent\fond.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\Game.ico">
+    <Resource Include="Presentation\HoyContent\Game.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="edit_undo.png" />
-    <Resource Include="FondEntree.png" />
-    <Resource Include="Entrainement.png" />
-    <Resource Include="Aide.png" />
-    <Resource Include="AideTuto.png" />
-    <Resource Include="fond.png" />
-    <Resource Include="fondjeu.png" />
-    <Content Include="HoyContent\hooy.wav">
+    <Resource Include="Presentation\edit_undo.png" />
+    <Resource Include="Presentation\FondEntree.png" />
+    <Resource Include="Presentation\Entrainement.png" />
+    <Resource Include="Presentation\Aide.png" />
+    <Resource Include="Presentation\AideTuto.png" />
+    <Resource Include="Presentation\fond.png" />
+    <Resource Include="Presentation\fondjeu.png" />
+    <Content Include="Presentation\HoyContent\hooy.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="HoyContent\hoy.wav">
+    <Content Include="Presentation\HoyContent\hoy.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="HoyContent\Intro.jpg">
+    <Resource Include="Presentation\HoyContent\Intro.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Content Include="HoyContent\Intro.mp3">
+    <Content Include="Presentation\HoyContent\Intro.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="HoyContent\titrehoy.png">
+    <Resource Include="Presentation\HoyContent\titrehoy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\tuto.png">
+    <Resource Include="Presentation\HoyContent\tuto.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="HoyContent\téléchargement.jpg">
+    <Resource Include="Presentation\HoyContent\téléchargement.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Content Include="HoyContent\zik.wav">
+    <Content Include="Presentation\HoyContent\zik.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Resources\Actions-application-exit-icon.png">
+    <Resource Include="Presentation\Resources\Actions-application-exit-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Aide.png">
+    <Resource Include="Presentation\Resources\Aide.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\AideDessus.png">
+    <Resource Include="Presentation\Resources\AideDessus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\AideDessus1234.png">
+    <Resource Include="Presentation\Resources\AideDessus1234.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\AideTuto.png">
+    <Resource Include="Presentation\Resources\AideTuto.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\edit_undo.png">
+    <Resource Include="Presentation\Resources\edit_undo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Entrainement.png">
+    <Resource Include="Presentation\Resources\Entrainement.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\EntrainementDessus.png">
+    <Resource Include="Presentation\Resources\EntrainementDessus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\etoiles.png">
+    <Resource Include="Presentation\Resources\etoiles.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\fig1.png">
+    <Resource Include="Presentation\Resources\fig1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\fig10.png">
+    <Resource Include="Presentation\Resources\fig10.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\fig2.png">
+    <Resource Include="Presentation\Resources\fig2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\fig3.png">
+    <Resource Include="Presentation\Resources\fig3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\fig4.png">
+    <Resource Include="Presentation\Resources\fig4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\fig5.png">
+    <Resource Include="Presentation\Resources\fig5.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\fig6.png">
+    <Resource Include="Presentation\Resources\fig6.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\fig7.png">
+    <Resource Include="Presentation\Resources\fig7.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\fig8.png">
+    <Resource Include="Presentation\Resources\fig8.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\fig9.png">
+    <Resource Include="Presentation\Resources\fig9.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\fighoy.png">
+    <Resource Include="Presentation\Resources\fighoy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\fond.png">
+    <Resource Include="Presentation\Resources\fond.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\FondEntree.png">
+    <Resource Include="Presentation\Resources\FondEntree.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Intro.jpg">
+    <Resource Include="Presentation\Resources\Intro.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\JouerDessus.png">
+    <Resource Include="Presentation\Resources\JouerDessus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\JouerHoy.png">
+    <Resource Include="Presentation\Resources\JouerHoy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Kim.png">
+    <Resource Include="Presentation\Resources\Kim.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\titrehoy.png">
+    <Resource Include="Presentation\Resources\titrehoy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\tuto.png">
+    <Resource Include="Presentation\Resources\tuto.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\téléchargement.jpg">
+    <Resource Include="Presentation\Resources\téléchargement.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="wAide.xaml">
+    <Page Include="Vue\wAide.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="wEntrainement.xaml">
+    <Page Include="Vue\wEntrainement.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="wEntree.xaml">
+    <Page Include="Vue\wEntree.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="wJeu.xaml">
+    <Page Include="Vue\wJeu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Vue\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

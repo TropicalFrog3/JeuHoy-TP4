@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JeuHoy_WPF"
         mc:Ignorable="d"
-       Title="Jeu Hoy" Height="450" Width="800" WindowState="Maximized" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"  Icon="/téléchargement.jpg">
+       Title="Jeu Hoy" Height="450" Width="800" WindowState="Maximized" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"  Icon="/Presentation/téléchargement.jpg">
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/AideTuto.png"/>
+            <ImageBrush ImageSource="/Presentation/AideTuto.png"/>
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -24,7 +24,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Image x:Name="image" Grid.Column="0" Grid.Row="4" Margin="30,0,0,0" Source="/edit_undo.png" MouseEnter="picRetour_MouseHover" MouseLeave="picRetour_MouseLeave" MouseLeftButtonDown="picRetour_Click"/>
+        <Image x:Name="image" Grid.Column="0" Grid.Row="4" Margin="30,0,0,0" Source="/Presentation/edit_undo.png" MouseEnter="picRetour_MouseHover" MouseLeave="picRetour_MouseLeave" MouseLeftButtonDown="picRetour_Click"/>
 
     </Grid>
 </Window>

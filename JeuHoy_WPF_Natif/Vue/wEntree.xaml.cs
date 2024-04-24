@@ -23,6 +23,7 @@ namespace JeuHoy_WPF
     public partial class wEntree : Window
     {
         private JouerMp3 _wmpIntro = new JouerMp3();
+        private const string _CheminHoyContent = @"./Presentation/HoyContent/";
 
         /// <summary>
         /// Constructeur
@@ -31,7 +32,7 @@ namespace JeuHoy_WPF
         {
             InitializeComponent();
 
-            _wmpIntro.Open(@"./HoyContent/intro.mp3");
+            _wmpIntro.Open(_CheminHoyContent + "intro.mp3");
             _wmpIntro.Play(true);
 
         }
@@ -50,7 +51,7 @@ namespace JeuHoy_WPF
             f.ShowDialog();
             f.Close();
             this.Show();
-            _wmpIntro.Open(@"./HoyContent/intro.mp3");
+            _wmpIntro.Open(_CheminHoyContent + "intro.mp3");
             _wmpIntro.Play(true);
         }
 
@@ -68,7 +69,7 @@ namespace JeuHoy_WPF
             f.ShowDialog();
             f.Close();
             this.Show();
-            _wmpIntro.Open(@"./HoyContent/intro.mp3");
+            _wmpIntro.Open(_CheminHoyContent + "intro.mp3");
             _wmpIntro.Play(true);
         }
 
@@ -119,7 +120,7 @@ namespace JeuHoy_WPF
             }
             else if (p.Name == "picAide")
             {
-                Uri uriSource = new Uri(AppDomain.CurrentDomain.BaseDirectory +  @"./Resources/AideDessus.png", UriKind.Absolute);
+                Uri uriSource = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"./Resources/AideDessus.png", UriKind.Absolute);
                 picAide.Source = new BitmapImage(uriSource);
             }
         }
