@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JeuHoy_WPF"
         mc:Ignorable="d"
-        Title="Jeu Hoy" Height="450" Width="800" WindowState="Maximized" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"  Icon="/Presentation/téléchargement.jpg">
+        Title="Jeu Hoy" Height="450" Width="800" WindowState="Maximized" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"  Icon="/Presentation/téléchargement.jpg" WindowStyle="None">
    
     
     <Grid>
