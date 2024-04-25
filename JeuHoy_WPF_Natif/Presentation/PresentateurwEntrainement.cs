@@ -30,7 +30,7 @@ namespace JeuHoy_WPF_Natif.Presentation
         private void Vue_EcritureFichierEvt(object sender, EventArgs e)
         {
             string sNomFichier = _vue.NomFichier;
-            _vue.Console = _gestionFichierTexte.EcrireFichier(sNomFichier, _vue.ContenuFichier);
+            _vue.Console = _gestionFichierTexte.EcrireFichier(sNomFichier, _vue.Data);
           
         }
 

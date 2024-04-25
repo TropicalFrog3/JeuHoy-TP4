@@ -68,6 +68,7 @@
     <Compile Include="Modele\CstApplication.cs" />
     <Compile Include="Modele\GestionFichierTexte.cs" />
     <Compile Include="Modele\IGestionFichierTexte.cs" />
+    <Compile Include="Modele\SkeletonData.cs" />
     <Compile Include="Presentation\JouerMp3.cs" />
     <Compile Include="Presentation\JouerSon.cs" />
     <Compile Include="App.xaml.cs">

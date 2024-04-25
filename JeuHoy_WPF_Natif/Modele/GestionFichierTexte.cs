@@ -12,7 +12,7 @@ namespace JeuHoy_WPF_Natif.Modele
 {
     public class GestionFichierTexte : IGestionFichierTexte
     {
-        public string EcrireFichier(string sNomFichier, Dictionary<int, Dictionary<JointType, List<Point>>> bodyContenu)
+        public string EcrireFichier(string sNomFichier, SkeletonData bodyContenu)
         {
             string sResultat = "";
             StreamWriter writer = null;
@@ -21,7 +21,7 @@ namespace JeuHoy_WPF_Natif.Modele
             {
                 writer = new StreamWriter(sNomFichier, true);
 
-                foreach (KeyValuePair<int, Dictionary<JointType, List<Point>>> body in bodyContenu)
+                foreach (KeyValuePair<int, Dictionary<JointType, List<Point>>> body in bodyContenu.GetData())
                 {
                     writer.WriteLine("Body " + body.Key);
                     foreach (KeyValuePair<JointType, List<Point>> joint in body.Value)

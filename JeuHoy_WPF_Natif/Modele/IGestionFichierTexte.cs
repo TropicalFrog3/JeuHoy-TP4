@@ -9,9 +9,9 @@ using System.Windows.Media.Imaging;
 
 namespace JeuHoy_WPF_Natif.Modele
 {
-    public interface IGestionFichierTexte
+    internal interface IGestionFichierTexte
     {
         string LireFichier(string sNomFichier);
-        string EcrireFichier(string sNomFichier, Dictionary<int, Dictionary<JointType, List<Point>>> bodyContenu);
+        string EcrireFichier(string sNomFichier, SkeletonData bodyContenu);
     }
 }

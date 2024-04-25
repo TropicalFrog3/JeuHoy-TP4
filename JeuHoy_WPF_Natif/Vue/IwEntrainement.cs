@@ -1,4 +1,5 @@
-﻿using Microsoft.Kinect;
+﻿using JeuHoy_WPF_Natif.Modele;
+using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace JeuHoy_WPF_Natif.Vue
     {
         string Console { get; set; }
         string NomFichier { get; }
-        Dictionary<int, Dictionary<JointType, List<Point>>> ContenuFichier { get; }
+        SkeletonData Data { get; }
         void Close();
         event EventHandler LectureFichierEvt;
         event EventHandler EcritureFichierEvt;

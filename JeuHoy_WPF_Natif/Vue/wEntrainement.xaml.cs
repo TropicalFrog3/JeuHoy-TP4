@@ -1,4 +1,5 @@
-﻿using JeuHoy_WPF_Natif.Presentation;
+﻿using JeuHoy_WPF_Natif.Modele;
+using JeuHoy_WPF_Natif.Presentation;
 using JeuHoy_WPF_Natif.Vue;
 using Microsoft.Kinect;
 using System;
@@ -37,7 +38,7 @@ namespace JeuHoy_WPF
         private ushort[] _picFrameData = null;
         private byte[] _picPixels = null;
 
-        private Dictionary<int, Dictionary<JointType, List<Point>>> _skeletonData = new Dictionary<int, Dictionary<JointType, List<Point>>>();
+        private SkeletonData _skeletonData = new SkeletonData();
 
 
 
@@ -80,7 +81,7 @@ namespace JeuHoy_WPF
         public string Console { get => txtConsole.Text; set => txtConsole.Text = value; }
         string IwEntrainement.NomFichier => "DataPerceptron.txt";
 
-        public Dictionary<int, Dictionary<JointType, List<Point>>> ContenuFichier { get => _skeletonData; set => _skeletonData = value; }
+        public SkeletonData Data { get => _skeletonData; set => _skeletonData = value; }
 
         public event EventHandler FermetureEvt;
         public event EventHandler LectureFichierEvt;
@@ -96,16 +97,17 @@ namespace JeuHoy_WPF
             {
                 if (bodyFrame != null)
                 {
-                    Body[] bodies = new Body[6];
+                    Body[] bodies = new Body[CstApplication.SKELETONCOUNT];
 
                     bodyFrame.GetAndRefreshBodyData(bodies);
 
                     foreach (Body body in bodies)
                     {
-                        if(body.IsTracked)
+                        if (body.IsTracked)
                         {
+
                             if (!_skeletonData.ContainsKey(_positionEnCours))
-                                _skeletonData[_positionEnCours] = new Dictionary<JointType, List<Point>>();
+                                _skeletonData.AddBody(_positionEnCours, new Dictionary<JointType, List<Point>>());
 
                             foreach (Joint joint in body.Joints.Values)
                             {
@@ -113,23 +115,14 @@ namespace JeuHoy_WPF
                                 {
                                     Point point = GetPoint(_kinectSensor, joint.Position, pDessinSquelette.ActualHeight, pDessinSquelette.ActualWidth);
 
-                                    if (!_skeletonData[_positionEnCours].ContainsKey(joint.JointType))
-                                    {
-                                        _skeletonData[_positionEnCours][joint.JointType] = new List<Point>();
-                                    }
-                                    else
-                                    {
-                                        _skeletonData[_positionEnCours][joint.JointType].Add(point);
-                                    }
-                                    // else WTF?
-                                    _skeletonData[_positionEnCours][joint.JointType].Add(point);
+                                    if (!_skeletonData.ContainsKey(_positionEnCours, joint.JointType))
+                                        _skeletonData.AddJoint(_positionEnCours, joint.JointType, new List<Point>());
+                                    _skeletonData.AddPoint(_positionEnCours, joint.JointType, point);
 
                                 }
                             }
                             DessinerSquelette(body, _kinectSensor);
                         }
-                       
-
                     }
                 }
             }
@@ -196,6 +189,27 @@ namespace JeuHoy_WPF
             {
                 if (body != null)
                 {
+                    DrawBone(body, JointType.Head, JointType.Neck, sensor);
+                    DrawBone(body, JointType.Neck, JointType.SpineShoulder, sensor);
+                    DrawBone(body, JointType.SpineShoulder, JointType.SpineMid, sensor);
+                    DrawBone(body, JointType.SpineMid, JointType.SpineBase, sensor);
+                    DrawBone(body, JointType.SpineShoulder, JointType.ShoulderRight, sensor);
+                    DrawBone(body, JointType.SpineShoulder, JointType.ShoulderLeft, sensor);
+                    DrawBone(body, JointType.SpineBase, JointType.HipRight, sensor);
+                    DrawBone(body, JointType.SpineBase, JointType.HipLeft, sensor);
+                    DrawBone(body, JointType.ShoulderRight, JointType.ElbowRight, sensor);
+                    DrawBone(body, JointType.ElbowRight, JointType.WristRight, sensor);
+                    DrawBone(body, JointType.WristRight, JointType.HandRight, sensor);
+                    DrawBone(body, JointType.ShoulderLeft, JointType.ElbowLeft, sensor);
+                    DrawBone(body, JointType.ElbowLeft, JointType.WristLeft, sensor);
+                    DrawBone(body, JointType.WristLeft, JointType.HandLeft, sensor);
+                    DrawBone(body, JointType.HipRight, JointType.KneeRight, sensor);
+                    DrawBone(body, JointType.KneeRight, JointType.AnkleRight, sensor);
+                    DrawBone(body, JointType.AnkleRight, JointType.FootRight, sensor);
+                    DrawBone(body, JointType.HipLeft, JointType.KneeLeft, sensor);
+                    DrawBone(body, JointType.KneeLeft, JointType.AnkleLeft, sensor);
+                    DrawBone(body, JointType.AnkleLeft, JointType.FootLeft, sensor);
+
                     Joint[] joints = body.Joints.Values.ToArray();
                     for (int i = 0; i < joints.Count(); i++)
                         DrawJoint(sensor, joints[i], CstApplication.BODY_ELLIPSE_SIZE, pDessinSquelette);
@@ -204,6 +218,28 @@ namespace JeuHoy_WPF
             catch (Exception ex)
             {
                 txtConsole.Text = ex.Message;
+            }
+        }
+
+        private void DrawBone(Body body, JointType jointType1, JointType jointType2, KinectSensor sensor)
+        {
+            Joint joint1 = body.Joints[jointType1];
+            Joint joint2 = body.Joints[jointType2];
+
+            if (joint1.Position.X != 0 && joint1.Position.Y != 0 && joint2.Position.X != 0 && joint2.Position.Y != 0)
+            {
+                System.Windows.Point point1 = GetPoint(sensor, joint1.Position, pDessinSquelette.ActualHeight, pDessinSquelette.ActualWidth);
+                System.Windows.Point point2 = GetPoint(sensor, joint2.Position, pDessinSquelette.ActualHeight, pDessinSquelette.ActualWidth);
+
+                Line bone = new Line();
+                bone.Stroke = new SolidColorBrush(Colors.Green);
+                bone.StrokeThickness = 10;
+                bone.X1 = point1.X;
+                bone.Y1 = point1.Y;
+                bone.X2 = point2.X;
+                bone.Y2 = point2.Y;
+
+                pDessinSquelette.Children.Add(bone);
             }
         }
 
@@ -221,7 +257,7 @@ namespace JeuHoy_WPF
                 System.Windows.Point point = GetPoint(sensor, joint.Position, canvas.ActualHeight, canvas.ActualWidth); // Use ActualHeight and ActualWidth
 
                 Ellipse ellipse = new Ellipse();
-                ellipse.Fill = new SolidColorBrush(Colors.Green);
+                ellipse.Fill = new SolidColorBrush(Colors.LightGreen);
                 ellipse.Width = size;
                 ellipse.Height = size;
 
