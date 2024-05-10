@@ -12,6 +12,7 @@ namespace JeuHoy_WPF_Natif.Presentation
     {
         private IwEntrainement _vue;
         private GestionFichierTexte _gestionFichierTexte;
+        private Perceptron _perceptron;
 
         public PresentateurwEntrainement(IwEntrainement vue)
         {
@@ -19,6 +20,7 @@ namespace JeuHoy_WPF_Natif.Presentation
             _vue.LectureFichierEvt += Vue_LectureFichierEvt;
             _vue.EcritureFichierEvt += Vue_EcritureFichierEvt;
             _vue.FermetureEvt += Vue_FermetureEvt;
+            _vue.EntrainementEvt += Vue_EntrainementEvt;
             _gestionFichierTexte = new GestionFichierTexte();
         }
 
@@ -30,15 +32,32 @@ namespace JeuHoy_WPF_Natif.Presentation
         private void Vue_EcritureFichierEvt(object sender, EventArgs e)
         {
             string sNomFichier = _vue.NomFichier;
+            
             _vue.Console = _gestionFichierTexte.EcrireFichier(sNomFichier, _vue.Data);
-          
         }
 
         private void Vue_LectureFichierEvt(object sender, EventArgs e)
         {
             string sNomFichier = _vue.NomFichier;
-            _vue.Console = _gestionFichierTexte.LireFichier(sNomFichier);
+
+            _perceptron = new Perceptron(_gestionFichierTexte.LireFichier(sNomFichier));
         }
+
+        private void Vue_EntrainementEvt(object sender, EventArgs e)
+        {
+            bool bResultat = _perceptron.Process();
+
+            if (bResultat)
+            {
+                _vue.Console += bResultat.ToString();
+            }
+            else
+            {
+                _vue.Console += bResultat.ToString();
+            }
+            _vue.Console += "\n";
+        }
+
 
 
     }

@@ -19,6 +19,7 @@ namespace JeuHoy_WPF_Natif.Vue
         event EventHandler LectureFichierEvt;
         event EventHandler EcritureFichierEvt;
         event EventHandler FermetureEvt;
+        event EventHandler EntrainementEvt;
 
     }
 }

@@ -11,7 +11,7 @@ namespace JeuHoy_WPF_Natif.Modele
 {
     internal interface IGestionFichierTexte
     {
-        string LireFichier(string sNomFichier);
+        List<Dictionary<int, Dictionary<JointType, List<Point>>>> LireFichier(string sNomFichier);
         string EcrireFichier(string sNomFichier, SkeletonData bodyContenu);
     }
 }

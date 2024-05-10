@@ -40,8 +40,6 @@ namespace JeuHoy_WPF
 
         private SkeletonData _skeletonData = new SkeletonData();
 
-
-
         /// <summary>
         /// Constructeur
         /// </summary>
@@ -63,8 +61,6 @@ namespace JeuHoy_WPF
 
                 multi.MultiSourceFrameArrived += Multi_MultiSourceFrameArrived;
                 bodyFrameReader.FrameArrived += BodyFrameReader_FrameArrived;
-
-                picKinect.Source = _bitmap;
             }
 
             for (int i = 1; i <= CstApplication.NBFIGURE; i++)
@@ -86,6 +82,7 @@ namespace JeuHoy_WPF
         public event EventHandler FermetureEvt;
         public event EventHandler LectureFichierEvt;
         public event EventHandler EcritureFichierEvt;
+        public event EventHandler EntrainementEvt;
 
 
         private void BodyFrameReader_FrameArrived(object sender, BodyFrameArrivedEventArgs e)
@@ -113,7 +110,9 @@ namespace JeuHoy_WPF
                             {
                                 if (joint.TrackingState == TrackingState.Tracked)
                                 {
-                                    Point point = GetPoint(_kinectSensor, joint.Position, pDessinSquelette.ActualHeight, pDessinSquelette.ActualWidth);
+                                    Point point;
+
+                                    point = GetPoint(_kinectSensor, joint.Position, pDessinSquelette.ActualHeight, pDessinSquelette.ActualWidth);
 
                                     if (!_skeletonData.ContainsKey(_positionEnCours, joint.JointType))
                                         _skeletonData.AddJoint(_positionEnCours, joint.JointType, new List<Point>());
@@ -254,16 +253,15 @@ namespace JeuHoy_WPF
         {
             if (joint.Position.X != 0 && joint.Position.Y != 0 && joint.Position.Z != 0)
             {
-                System.Windows.Point point = GetPoint(sensor, joint.Position, canvas.ActualHeight, canvas.ActualWidth); // Use ActualHeight and ActualWidth
+                System.Windows.Point point = GetPoint(sensor, joint.Position, canvas.ActualHeight, canvas.ActualWidth);
 
                 Ellipse ellipse = new Ellipse();
-                ellipse.Fill = new SolidColorBrush(Colors.LightGreen);
                 ellipse.Width = size;
                 ellipse.Height = size;
 
+                ellipse.Fill = new SolidColorBrush(Colors.LightGreen);
                 Canvas.SetLeft(ellipse, point.X - size / 2);
                 Canvas.SetTop(ellipse, point.Y - size / 2);
-
                 canvas.Children.Add(ellipse);
             }
         }
@@ -371,8 +369,13 @@ namespace JeuHoy_WPF
             // ajout du perceptron pour l'apprentissage
             // ajout de la position du skelette
 
-            EcritureFichierEvt(this, new EventArgs());
+            //EcritureFichierEvt(this, new EventArgs());
 
+            var Event = new EventArgs();
+
+            LectureFichierEvt(this, Event);
+
+            EntrainementEvt(this, Event);
         }
 
 
