@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace JeuHoy_WPF_Natif.Modele
@@ -15,6 +13,11 @@ namespace JeuHoy_WPF_Natif.Modele
         public SkeletonData()
         {
             Data = new Dictionary<int, Dictionary<JointType, List<Point>>>();
+        }
+
+        public Dictionary<int, Dictionary<JointType, List<Point>>> DataProp
+        {
+            get { return Data; }
         }
 
         public void AddBody(int iBody, Dictionary<JointType, List<Point>> body)

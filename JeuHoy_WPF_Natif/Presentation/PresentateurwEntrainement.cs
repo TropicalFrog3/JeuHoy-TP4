@@ -1,18 +1,16 @@
 ﻿using JeuHoy_WPF_Natif.Modele;
 using JeuHoy_WPF_Natif.Vue;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JeuHoy_WPF_Natif.Presentation
 {
     public class PresentateurwEntrainement
     {
+        #region Champs
         private IwEntrainement _vue;
         private GestionFichierTexte _gestionFichierTexte;
         private Perceptron _perceptron;
+        #endregion
 
         public PresentateurwEntrainement(IwEntrainement vue)
         {
@@ -57,8 +55,5 @@ namespace JeuHoy_WPF_Natif.Presentation
             }
             _vue.Console += "\n";
         }
-
-
-
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -308,7 +307,6 @@ namespace JeuHoy_WPF
             bResultat = _dicImgFigure.TryGetValue("fig" + _positionEnCours, out imgValue);
             if (bResultat == true)
                 picPositionAFaire.Source = imgValue;
-
         }
 
         /// <summary>
@@ -318,7 +316,7 @@ namespace JeuHoy_WPF
         /// <param name="e"></param>
         private void picRetour_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         /// <summary>
@@ -328,7 +326,7 @@ namespace JeuHoy_WPF
         /// <param name="e"></param>
         private void picRetour_MouseHover(object sender, EventArgs e)
         {
-            this.Cursor = Cursors.Hand;
+            Cursor = Cursors.Hand;
         }
 
         /// <summary>
@@ -364,20 +362,14 @@ namespace JeuHoy_WPF
         /// <param name="e"></param>
         private void btnApprendre_Click(object sender, RoutedEventArgs e)
         {
-            //Ajouter du code ICI
 
-            // ajout du perceptron pour l'apprentissage
-            // ajout de la position du skelette
-
-            //EcritureFichierEvt(this, new EventArgs());
+            EcritureFichierEvt(this, new EventArgs());
 
             var Event = new EventArgs();
 
             LectureFichierEvt(this, Event);
 
-            EntrainementEvt(this, Event);
+            //EntrainementEvt(this, Event);
         }
-
-
     }
 }

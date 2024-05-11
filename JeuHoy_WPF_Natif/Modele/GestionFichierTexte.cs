@@ -3,11 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
 
 namespace JeuHoy_WPF_Natif.Modele
 {
@@ -15,7 +11,7 @@ namespace JeuHoy_WPF_Natif.Modele
     {
         public string EcrireFichier(string sNomFichier, SkeletonData bodyContenu)
         {
-            string sResultat = "";
+            string sResultat;
             StreamWriter writer = null;
             sNomFichier = "../../../" + sNomFichier;
             try
@@ -55,7 +51,7 @@ namespace JeuHoy_WPF_Natif.Modele
             return sResultat;
         }
 
-        public List<Dictionary<int, Dictionary<JointType, List<Point>>>> LireFichier(string sNomFichier)
+        public SkeletonData LireFichier(string sNomFichier)
         {
             // in the file there is : 
             // Body 1
@@ -93,8 +89,7 @@ namespace JeuHoy_WPF_Natif.Modele
                 try
                 {
                     reader = new StreamReader(sNomFichier);
-                    List<Dictionary<int, Dictionary<JointType, List<Point>>>> listeBody = new List<Dictionary<int, Dictionary<JointType, List<Point>>>>();
-                    SkeletonData body = new SkeletonData();
+                    SkeletonData allBody = new SkeletonData();
                     int iBody = 0;
                     while (!reader.EndOfStream)
                     {
@@ -103,7 +98,7 @@ namespace JeuHoy_WPF_Natif.Modele
                         {
                             iBody = int.Parse(sLine.Split(' ')[1]);
 
-                            body.AddBody(iBody, new Dictionary<JointType, List<Point>>());
+                            allBody.AddBody(iBody, new Dictionary<JointType, List<Point>>());
                         }
                         else if (sLine == "")
                         {
@@ -112,7 +107,6 @@ namespace JeuHoy_WPF_Natif.Modele
                         else
                         {
                             string[] sJoint = sLine.Split('\t');
-                            // remove the empty string
                             sJoint = sJoint.Where(x => !string.IsNullOrEmpty(x)).ToArray();
 
                             JointType jointType = (JointType)Enum.Parse(typeof(JointType), sJoint[0]);
@@ -120,18 +114,17 @@ namespace JeuHoy_WPF_Natif.Modele
                             string[] sPointX = sJoint[2].Split('\t');
                             string[] sPointY = sJoint[4].Split('\t');
 
-
                             Point point = new Point(double.Parse(sPointX[0].Replace('.', ',')), double.Parse(sPointY[0].Replace('.', ',')));
 
-                            body.AddJoint(iBody, jointType, new List<Point>());
-                            body.AddPoint(iBody, jointType, point);
+                            allBody.AddJoint(iBody, jointType, new List<Point>());
+                            allBody.AddPoint(iBody, jointType, point);
                         }
-                        if (sLine.Contains("Body " + iBody))
-                        {
-                            listeBody.Add(body.GetData());
-                        }
+                        //if (sLine.Contains("Body " + iBody))
+                        //{
+                        //    listeBody.Add(body.GetData());
+                        //}
                     }
-                    return listeBody;                   // /!\ BREAK POINT MARCHE PAS LA LISTE /!\
+                    return allBody;
                 }
                 catch (Exception e)
                 {
@@ -146,7 +139,7 @@ namespace JeuHoy_WPF_Natif.Modele
             if (reader != null)
                 reader.Close();
 
-            return new List<Dictionary<int, Dictionary<JointType, List<Point>>>>();
+            return new SkeletonData();
         }
     }
 }
