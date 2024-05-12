@@ -8,10 +8,12 @@ namespace JeuHoy_WPF_Natif.Vue
         string Console { get; set; }
         string NomFichier { get; }
         SkeletonData Data { get; }
+        SkeletonData CurrentData { get; }
         void Close();
         event EventHandler LectureFichierEvt;
         event EventHandler EcritureFichierEvt;
         event EventHandler FermetureEvt;
         event EventHandler EntrainementEvt;
+        event EventHandler TestEvt;
     }
 }

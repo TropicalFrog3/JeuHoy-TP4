@@ -8,62 +8,73 @@ namespace JeuHoy_WPF_Natif.Modele
 {
     public class Perceptron
     {
-        private const double VITESSE_APPRENTISSAGE = 0.1f;
+        private const double LEARNING_RATE = 0.1;
 
-        private SkeletonData _data;
-        private List<double> _poids;
-        private float fThreshold = 0.5f;
+        private List<double> _weights;
+        private SkeletonData _skeletonData;
+        private double threshold = 0.5;
 
-        public Perceptron(SkeletonData data)
+        public SkeletonData data
         {
-            _data = data;
-            _poids = new List<double>(new double[_data.Count()]);
+            get { return _skeletonData; }
         }
 
-        public bool Train(int iterations)
+        public Perceptron(SkeletonData skeletonData)
         {
-            try
-            {
-                for (int i = 0; i < iterations; i++)
-                {
-                    foreach (var iBody in _data.DataProp.Keys)
-                    {
-                        bool output = Process(_data.GetAllPoints(iBody));
-                        int error = iBody - (output ? 1 : 0);
+            _skeletonData = skeletonData;
+            _weights = new List<double>();
+            Random random = new Random();
 
-                        for (int k = 0; k < _poids.Count; k++)
-                        {
-                            for (int j = 0; j < _data.GetAllPoints(iBody).Count; j++)
-                            {
-                                _poids[k] += VITESSE_APPRENTISSAGE * error * _data.GetAllPoints(iBody)[j].X;
-                                _poids[k] += VITESSE_APPRENTISSAGE * error * _data.GetAllPoints(iBody)[j].Y;
-                            }
-                        }
+            List<List<Point>> inputData = new List<List<Point>>();
+            foreach (var body in skeletonData.DataProp)
+            {
+                inputData.AddRange(body.Value.Values.ToList());
+            }
+
+            for (int i = 0; i < inputData.Count(); i++)
+            {
+                _weights.Add(random.NextDouble());
+            }
+        }
+
+        public void Train(List<List<Point>> inputs, List<int> targets, int iterations)
+        {
+            for (int iter = 0; iter < iterations; iter++)
+            {
+                for (int i = 0; i < inputs.Count; i++)
+                {
+                    double prediction = Process(inputs[i])[0];
+                    double error = targets[i] - prediction;
+
+                    for (int j = 0; j < _weights.Count; j++)
+                    {
+                        _weights[j] += LEARNING_RATE * error * inputs[i][j].X;
+                        _weights[j] += LEARNING_RATE * error * inputs[i][j].Y;
                     }
                 }
-                return true;
+                threshold += LEARNING_RATE;
             }
-            catch
+        }
+
+        public List<double> Process(List<Point> inputs)
+        {
+            List<double> result = new List<double>();
+            double sum = 0.0;
+
+            for (int i = 0; i < inputs.Count; i++)
             {
-                return false;
+                sum += inputs[i].X * _weights[i];
+                sum += inputs[i].Y * _weights[i];
             }
+
+            result.Add(Step(sum) ? 1 : 0);
+            result.Add(sum);
+            return result;
         }
 
         private bool Step(double weightedSum)
         {
-            return weightedSum > fThreshold;
-        }
-
-        private bool Process(List<Point> points)
-        {
-            double fWeightedSum = 0.0d;
-
-            for (int i = 0; i < points.Count; i++)
-            {
-                fWeightedSum += points[i].X * _poids[i];
-                fWeightedSum += points[i].Y * _poids[i];
-            }
-            return Step(fWeightedSum);
+            return weightedSum > threshold;
         }
     }
 }

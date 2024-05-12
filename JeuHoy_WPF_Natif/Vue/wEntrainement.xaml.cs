@@ -75,18 +75,21 @@ namespace JeuHoy_WPF
             lblNbPositions.Content = "/ " + CstApplication.NBFIGURE.ToString();
             ChargerFigure();
             _son.JouerSonAsync(@"./Presentation/HoyContent/hoy.wav");
+
+            ChargerModel();
         }
 
         public string Console { get => txtConsole.Text; set => txtConsole.Text = value; }
         string IwEntrainement.NomFichier => "DataPerceptron.txt";
 
         public SkeletonData Data { get => _skeletonData; set => _skeletonData = value; }
+        public SkeletonData CurrentData { get => _skeletonData; }
 
         public event EventHandler FermetureEvt;
         public event EventHandler LectureFichierEvt;
         public event EventHandler EcritureFichierEvt;
         public event EventHandler EntrainementEvt;
-
+        public event EventHandler TestEvt;
 
         private void BodyFrameReader_FrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
@@ -126,8 +129,10 @@ namespace JeuHoy_WPF
                             DessinerSquelette(body, _kinectSensor);
                         }
                     }
+                    TestEvt(this, Event);
                 }
             }
+            
         }
 
         private void Multi_MultiSourceFrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)
@@ -367,8 +372,17 @@ namespace JeuHoy_WPF
         /// <param name="e"></param>
         private void btnApprendre_Click(object sender, RoutedEventArgs e)
         {
+            EcritureFichierEvt(this, Event);
+            LectureFichierEvt(this, Event);
+            EntrainementEvt(this, Event);
+        }
 
-            //EcritureFichierEvt(this, new EventArgs());
+        private void btnChargerModel_Click(object sender, RoutedEventArgs e)
+        {
+            ChargerModel();
+        }
+        private void ChargerModel()
+        {
             LectureFichierEvt(this, Event);
             EntrainementEvt(this, Event);
         }
