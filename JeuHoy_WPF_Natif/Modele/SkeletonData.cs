@@ -23,7 +23,9 @@ namespace JeuHoy_WPF_Natif.Modele
         public void AddBody(int iBody, Dictionary<JointType, List<Point>> body)
         {
             if (!Data.ContainsKey(iBody))
+            {
                 Data.Add(iBody, body);
+            }
         }
 
         public void AddJoint(int iBody, JointType jointType, List<Point> joint)
@@ -63,6 +65,16 @@ namespace JeuHoy_WPF_Natif.Modele
         public Point GetPoint(int iBody, JointType jointType, int iPoint)
         {
             return Data[iBody][jointType][iPoint];
+        }
+
+        public List<Point> GetAllPoints(int iBody)
+        {
+            List<Point> allPoints = new List<Point>();
+            foreach (var joint in Data[iBody].Values)
+            {
+                allPoints.AddRange(joint);
+            }
+            return allPoints;
         }
 
         public override string ToString()

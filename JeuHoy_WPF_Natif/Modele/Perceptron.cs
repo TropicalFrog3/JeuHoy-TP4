@@ -8,76 +8,61 @@ namespace JeuHoy_WPF_Natif.Modele
 {
     public class Perceptron
     {
-        //private const double VITESSE_APP = 0.1;
-        //private double[] _poids;
-
-        //public Perceptron()
-        //{
-        //    _poids = new double[20];
-        //    for (int i = 0; i < 20; i++)
-        //    {
-        //        _poids[i] = 0;
-        //    }
-        //}
-
-        ////public string
+        private const double VITESSE_APPRENTISSAGE = 0.1f;
 
         private SkeletonData _data;
-        private List<float> fInput = new List<float>();
-        private List<float> fWeights = new List<float>();
+        private List<double> _poids;
         private float fThreshold = 0.5f;
 
         public Perceptron(SkeletonData data)
         {
             _data = data;
+            _poids = new List<double>(new double[_data.Count()]);
+        }
 
-            for (int i =0; i <data.Count(); i++)
+        public bool Train(int iterations)
+        {
+            try
             {
-                fWeights.Add(0.0f);
+                for (int i = 0; i < iterations; i++)
+                {
+                    foreach (var iBody in _data.DataProp.Keys)
+                    {
+                        bool output = Process(_data.GetAllPoints(iBody));
+                        int error = iBody - (output ? 1 : 0);
+
+                        for (int k = 0; k < _poids.Count; k++)
+                        {
+                            for (int j = 0; j < _data.GetAllPoints(iBody).Count; j++)
+                            {
+                                _poids[k] += VITESSE_APPRENTISSAGE * error * _data.GetAllPoints(iBody)[j].X;
+                                _poids[k] += VITESSE_APPRENTISSAGE * error * _data.GetAllPoints(iBody)[j].Y;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
-        private bool Step(double WeightedSum)
+        private bool Step(double weightedSum)
         {
-            if (WeightedSum > fThreshold)
-                return true;
-            else
-                return false;
+            return weightedSum > fThreshold;
         }
 
-        public bool Process()
+        private bool Process(List<Point> points)
         {
-            // exemple de traitement
-            //fInput.Add(0.1f);
-            //fInput.Add(0.5f);
-            //fInput.Add(0.2f);
-
-            //fWeights.Add(0.4f);
-            //fWeights.Add(0.3f);
-            //fWeights.Add(0.6f);
-
-            //float fWeightedSum = 0.0f;
-            //for (int i = 0; i < fInput.Count; i++)
-            //{
-            //    fWeightedSum += fInput[i] * fWeights[i];
-            //    Console.WriteLine(fWeightedSum);
-            //}
-            //return Step(fWeightedSum);
-
-
-            // exemple de traitement avec les données du squelette
             double fWeightedSum = 0.0d;
 
-            //foreach (Dictionary<JointType, List<Point>> body in _data)
-            //{
-            //    for(int i = 0; i < body.Count(); i++)
-            //    {
-            //        // TODO: do the sum of each point with the corresponding weight
-            //        fWeightedSum += body[i].Values.ElementAt(0).ElementAt(0).X;
-            //        Console.WriteLine(fWeightedSum);
-            //    }
-            //}
-
+            for (int i = 0; i < points.Count; i++)
+            {
+                fWeightedSum += points[i].X * _poids[i];
+                fWeightedSum += points[i].Y * _poids[i];
+            }
             return Step(fWeightedSum);
         }
     }

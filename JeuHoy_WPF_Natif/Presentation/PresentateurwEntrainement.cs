@@ -43,7 +43,8 @@ namespace JeuHoy_WPF_Natif.Presentation
 
         private void Vue_EntrainementEvt(object sender, EventArgs e)
         {
-            bool bResultat = _perceptron.Process();
+            int i = 10;
+            bool bResultat = _perceptron.Train(i);
 
             if (bResultat)
             {

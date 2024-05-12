@@ -26,11 +26,14 @@ namespace JeuHoy_WPF
         public static readonly PixelFormat FORMAT = PixelFormats.Bgra32;
         #endregion
 
+        #region Champs 
         private PresentateurwEntrainement _presentateurwEntrainement;
 
         private Dictionary<string, BitmapImage> _dicImgFigure = new Dictionary<string, BitmapImage>();
         private JouerSon _son = new JouerSon();
         private int _positionEnCours = 1;
+        private EventArgs Event = new EventArgs();
+
 
         private KinectSensor _kinectSensor = null;
         private WriteableBitmap _bitmap = null;
@@ -38,6 +41,7 @@ namespace JeuHoy_WPF
         private byte[] _picPixels = null;
 
         private SkeletonData _skeletonData = new SkeletonData();
+        #endregion
 
         /// <summary>
         /// Constructeur
@@ -338,6 +342,7 @@ namespace JeuHoy_WPF
         {
             this.Cursor = Cursors.Arrow;
         }
+
         /// <summary>
         /// Lorsqu'on appuie sur le bouton suivant ou précédent, modifier la figure en conséquence.
         /// </summary>
@@ -363,13 +368,9 @@ namespace JeuHoy_WPF
         private void btnApprendre_Click(object sender, RoutedEventArgs e)
         {
 
-            EcritureFichierEvt(this, new EventArgs());
-
-            var Event = new EventArgs();
-
+            //EcritureFichierEvt(this, new EventArgs());
             LectureFichierEvt(this, Event);
-
-            //EntrainementEvt(this, Event);
+            EntrainementEvt(this, Event);
         }
     }
 }
