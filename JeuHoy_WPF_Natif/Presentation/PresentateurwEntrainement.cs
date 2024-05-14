@@ -7,6 +7,11 @@ using System.Windows;
 
 namespace JeuHoy_WPF_Natif.Presentation
 {
+    /// <summary>
+    /// auteur : nicolas lajoie, Arthur
+    /// description : Classe de présentation pour l'interface d'entraînement
+    /// date : 2020-05-12
+    /// </summary>
     public class PresentateurwEntrainement
     {
         #region Champs
@@ -15,6 +20,10 @@ namespace JeuHoy_WPF_Natif.Presentation
         private Perceptron _perceptron;
         #endregion
 
+        /// <summary>
+        /// Constructeur
+        /// </summary>
+        /// <param name="vue"></param>
         public PresentateurwEntrainement(IwEntrainement vue)
         {
             _vue = vue;
@@ -26,11 +35,21 @@ namespace JeuHoy_WPF_Natif.Presentation
             _gestionFichierTexte = new GestionFichierTexte();
         }
 
+        /// <summary>
+        /// Fermeture de la vue
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Vue_FermetureEvt(object sender, EventArgs e)
         {
             _vue.Close();
         }
 
+        /// <summary>
+        /// Écriture du fichier
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Vue_EcritureFichierEvt(object sender, EventArgs e)
         {
             string sNomFichier = _vue.NomFichier;
@@ -38,6 +57,11 @@ namespace JeuHoy_WPF_Natif.Presentation
             _vue.Console = _gestionFichierTexte.EcrireFichier(sNomFichier, _vue.Data);
         }
 
+        /// <summary>
+        /// Lecture du fichier
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Vue_LectureFichierEvt(object sender, EventArgs e)
         {
             string sNomFichier = _vue.NomFichier;
@@ -45,6 +69,11 @@ namespace JeuHoy_WPF_Natif.Presentation
             _perceptron = new Perceptron(_gestionFichierTexte.LireFichier(sNomFichier));
         }
 
+        /// <summary>
+        /// Entraînement du modèle
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Vue_EntrainementEvt(object sender, EventArgs e)
         {
             try
@@ -79,6 +108,11 @@ namespace JeuHoy_WPF_Natif.Presentation
             }
         }
 
+        /// <summary>
+        /// Test du modèle
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Vue_TestEvt(object sender, EventArgs e)
         {
             try

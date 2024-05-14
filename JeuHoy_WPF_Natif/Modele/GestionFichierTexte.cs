@@ -7,8 +7,19 @@ using System.Windows;
 
 namespace JeuHoy_WPF_Natif.Modele
 {
+    /// <summary>
+    /// Auteur : nicolas lajoie, Arthur
+    ///     description : Classe de gestion des fichiers texte
+    ///     date : 2020-05-12
+    /// </summary>
     public class GestionFichierTexte : IGestionFichierTexte
     {
+        /// <summary>
+        /// écriture du fichier
+        /// </summary>
+        /// <param name="sNomFichier"></param>
+        /// <param name="bodyContenu"></param>
+        /// <returns></returns>
         public string EcrireFichier(string sNomFichier, SkeletonData bodyContenu)
         {
             string sResultat;
@@ -51,6 +62,11 @@ namespace JeuHoy_WPF_Natif.Modele
             return sResultat;
         }
 
+        /// <summary>
+        /// lecture du fichier
+        /// </summary>
+        /// <param name="sNomFichier"></param>
+        /// <returns></returns>
         public SkeletonData LireFichier(string sNomFichier)
         {
             string sResultat = "";

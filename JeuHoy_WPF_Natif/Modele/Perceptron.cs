@@ -6,19 +6,29 @@ using System.Windows;
 
 namespace JeuHoy_WPF_Natif.Modele
 {
+    /// <summary>
+    /// Auteur : nicolas lajoie, Arthur
+    /// description : Classe de données pour les squelettes
+    /// date : 2020-05-12
+    /// </summary>
     public class Perceptron
     {
-        private const double LEARNING_RATE = 0.1;
+        #region Champs
+        private const double LEARNING_RATE = 0.01;
 
         private List<double> _weights;
         private SkeletonData _skeletonData;
-        private double threshold = 0.5;
 
         public SkeletonData data
         {
             get { return _skeletonData; }
         }
+        #endregion
 
+        /// <summary>
+        /// Constructeur
+        /// </summary>
+        /// <param name="skeletonData"></param>
         public Perceptron(SkeletonData skeletonData)
         {
             _skeletonData = skeletonData;
@@ -37,6 +47,12 @@ namespace JeuHoy_WPF_Natif.Modele
             }
         }
 
+        /// <summary>
+        /// entrainement du perceptron
+        /// </summary>
+        /// <param name="inputs"></param>
+        /// <param name="targets"></param>
+        /// <param name="iterations"></param>
         public void Train(List<List<Point>> inputs, List<int> targets, int iterations)
         {
             for (int iter = 0; iter < iterations; iter++)
@@ -48,14 +64,20 @@ namespace JeuHoy_WPF_Natif.Modele
 
                     for (int j = 0; j < _weights.Count; j++)
                     {
-                        _weights[j] += LEARNING_RATE * error * inputs[i][j].X;
-                        _weights[j] += LEARNING_RATE * error * inputs[i][j].Y;
+                        for(int k=0; k < inputs[i].Count; k++)
+                        {
+                            _weights[j] += LEARNING_RATE * error * inputs[i][k].X;
+                            _weights[j] += LEARNING_RATE * error * inputs[i][k].Y;
+                        }
                     }
                 }
-                threshold += LEARNING_RATE;
             }
         }
-
+        /// <summary>
+        /// Processus de prédiction
+        /// </summary>
+        /// <param name="inputs"></param>
+        /// <returns></returns>
         public List<double> Process(List<Point> inputs)
         {
             List<double> result = new List<double>();
@@ -71,10 +93,14 @@ namespace JeuHoy_WPF_Natif.Modele
             result.Add(sum);
             return result;
         }
-
+        /// <summary>
+        /// Fonction d'activation
+        /// </summary>
+        /// <param name="weightedSum"></param>
+        /// <returns></returns>
         private bool Step(double weightedSum)
         {
-            return weightedSum > threshold;
+            return (weightedSum >= 0 ? true : false);
         }
     }
 }

@@ -91,6 +91,11 @@ namespace JeuHoy_WPF
         public event EventHandler EntrainementEvt;
         public event EventHandler TestEvt;
 
+        /// <summary>
+        /// arriver de frame de la kinect
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BodyFrameReader_FrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
             pDessinSquelette.Children.Clear();
@@ -135,6 +140,11 @@ namespace JeuHoy_WPF
             
         }
 
+        /// <summary>
+        /// Arrivée de frame de la kinect
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Multi_MultiSourceFrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)
         {
             MultiSourceFrame sourceFrame = e.FrameReference.AcquireFrame();
@@ -148,6 +158,10 @@ namespace JeuHoy_WPF
             }
         }
 
+        /// <summary>
+        /// Affiche le frame de couleur de la kinect
+        /// </summary>
+        /// <param name="colorFrame"></param>
         private void ShowColorFrame(ColorFrame colorFrame)
         {
             if (colorFrame != null)
@@ -163,6 +177,11 @@ namespace JeuHoy_WPF
             }
         }
 
+        /// <summary>
+        /// Affiche le frame de couleur de la kinect
+        /// </summary>
+        /// <param name="pixels"></param>
+        /// <param name="currentFrameDescription"></param>
         private void RenderPixelArray(byte[] pixels, FrameDescription currentFrameDescription)
         {
             _bitmap.Lock();
@@ -171,6 +190,9 @@ namespace JeuHoy_WPF
             picKinect.Source = _bitmap;
         }
 
+        /// <summary>
+        /// Setup de l'affichage
+        /// </summary>
         private void SetupDisplay()
         {
             // COLOR display
@@ -180,6 +202,11 @@ namespace JeuHoy_WPF
             _picFrameData = new ushort[frameDescription.Width * frameDescription.Height];
         }
 
+        /// <summary>
+        /// Lorsque le sensor Kinect est connecté ou déconnecté, changer le titre de la fenêtre.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _kinectSensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
         {
             this.Title = "Kinect XBox One [2.0] - " + (e.IsAvailable ? "Connecté" : "Déconnecté");
@@ -228,6 +255,13 @@ namespace JeuHoy_WPF
             }
         }
 
+        /// <summary>
+        /// Dessine un bone d'un squelette d'un senseur Kinect sur le canvas passé en paramètre
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="jointType1"></param>
+        /// <param name="jointType2"></param>
+        /// <param name="sensor"></param>
         private void DrawBone(Body body, JointType jointType1, JointType jointType2, KinectSensor sensor)
         {
             Joint joint1 = body.Joints[jointType1];
@@ -377,10 +411,18 @@ namespace JeuHoy_WPF
             EntrainementEvt(this, Event);
         }
 
+        /// <summary>
+        /// Charger le modèle de danse.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnChargerModel_Click(object sender, RoutedEventArgs e)
         {
             ChargerModel();
         }
+        /// <summary>
+        /// Charger le modèle de danse.
+        /// </summary>
         private void ChargerModel()
         {
             LectureFichierEvt(this, Event);
